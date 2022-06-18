@@ -32,7 +32,7 @@ namespace W32W {
 		_W32W_EVENT_CLASS_TYPE(WindowResize)
 		_W32W_EVENT_CLASS_CATEGORY(EventCategoryWindow)
 
-		WindowResizeEvent(unsigned int width, unsigned int height)
+		WindowResizeEvent(int width, int height)
 			: m_width(width), m_height(height) {
 		}
 
@@ -42,19 +42,19 @@ namespace W32W {
 			return ss.str();
 		}
 
-		inline unsigned int getWidth() const { return m_width; }
-		inline unsigned int getHeight() const { return m_height; }
+		inline int getWidth() const { return m_width; }
+		inline int getHeight() const { return m_height; }
 
 	private:
 		unsigned int m_width, m_height;
 	};
 
-	class WindowMovedEvent : public Event {
+	class WindowMoveEvent : public Event {
 	public:
 		_W32W_EVENT_CLASS_TYPE(WindowMoved)
 		_W32W_EVENT_CLASS_CATEGORY(EventCategoryWindow)
 
-		WindowMovedEvent(unsigned int xPos, unsigned int yPos)
+		WindowMoveEvent(int xPos, int yPos)
 			: m_xPos(xPos), m_yPos(yPos) {
 		}
 
@@ -64,8 +64,8 @@ namespace W32W {
 			return ss.str();
 		}
 
-		inline unsigned int getXPos() const { return m_xPos; }
-		inline unsigned int getYPos() const { return m_yPos; }
+		inline int getXPos() const { return m_xPos; }
+		inline int getYPos() const { return m_yPos; }
 
 	private:
 		unsigned int m_xPos, m_yPos;

@@ -19,12 +19,20 @@ namespace W32W {
 
 		void close(int exitCode = 0);
 
-		void show();
 		void pollEvents();
 		void waitEvents();
 		void swapBuffers();
 
 		void setTitle(const std::string &title);
+		void setIcon(const std::string &icon);
+		void setSize(int width, int height);
+		void setPosition(int x, int y);
+		void setResizable(bool resizable = true);
+		void setFullscreen(bool fullscreen = true);
+		void setMaximized(bool maximized = true);
+		void setMinimized(bool minimized = true);
+		void setVisible(bool visible = true);
+		void setFocused(bool focused = true);
 
 		bool shouldClose() const;
 		HINSTANCE getHInstance() const;
@@ -34,18 +42,38 @@ namespace W32W {
 		int getWidth() const;
 		int getHeight() const;
 		float getAspectRatio() const;
+		int getXPos() const;
+		int getYPos() const;
+		bool isResizable() const;
+		bool isFullscreen() const;
+		bool isMaximized() const;
+		bool isMinimized() const;
+		bool isVisible() const;
+		bool isFocused() const;
 		int getExitCode() const;
 
 		inline void setEventCallback(EventCallbackFunc callback) { m_eventCallback = callback; }
 
 	private:
+		typedef struct {
+			DWORD style;
+			int width;
+			int height;
+			int xPos;
+			int yPos;
+			bool resizable;
+			bool maximized;
+		} SavedProps;
+
 		const wchar_t *m_CLASS_NAME;
 		HINSTANCE m_hInstance;
 		HWND m_hWnd;
 		HDC m_hDC;
+		DWORD m_style;
 		std::string m_title;
-		int m_width, m_height;
+		int m_width, m_height, m_xPos, m_yPos;
 		float m_aspectRatio;
+		bool m_resizable, m_fullscreen, m_maximized, m_minimized, m_visible, m_focused;
 		bool m_shouldClose;
 		int m_exitCode;
 

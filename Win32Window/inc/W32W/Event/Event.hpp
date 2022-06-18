@@ -26,8 +26,8 @@ namespace W32W {
 	};
 
 	#define _W32W_EVENT_CLASS_TYPE(type) inline static EventType getStaticEventType() { return EventType::type; } \
-								   inline EventType getEventType() const { return getStaticEventType(); } \
-								   inline const char *getName() const { return #type; }
+	                                     inline EventType getEventType() const { return getStaticEventType(); } \
+	                                     inline const char *getName() const { return #type; }
 
 	#define _W32W_EVENT_CLASS_CATEGORY(category) virtual inline unsigned short getCategoryFlags() const override { return category; }
 
