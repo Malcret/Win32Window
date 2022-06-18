@@ -1,0 +1,10 @@
+# Directories
+.vs/*
+.vscode/*
+bin/*
+
+# Files
+*.vcxproj*
+*.sln
+Makefile
+*.mk
