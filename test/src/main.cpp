@@ -37,11 +37,11 @@ void onEvents(W32W::Event &e) {
 }
 
 bool onKeyPress(W32W::KeyPressedEvent &e) {
-	switch (e.getKeyCode()) {
-		case VK_ESCAPE:
+	switch (e.getKey()) {
+		case W32W::KEY::ESCAPE:
 			pWindow->close();
 			break;
-		case VK_F11:
+		case W32W::KEY::F11:
 			pWindow->setFullscreen(!pWindow->isFullscreen());
 			break;
 		default:

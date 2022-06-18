@@ -3,7 +3,7 @@
 #include "W32W/Utility.hpp"
 
 #ifndef NDEBUG
-#define IF_EVENT_CALLBACK(x) if (m_eventCallback) { x; } else { W32W_ASSERT(false, "Failed to call callback") }
+#define IF_EVENT_CALLBACK(x) if (m_eventCallback) { x; } else { W32W_ASSERT(false, "Failed to call event callback") }
 #elif
 #define IF_EVENT_CALLBACK(x) if (m_eventCallback) { x; }
 #endif // NDEBUG
