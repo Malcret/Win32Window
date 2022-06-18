@@ -2,13 +2,9 @@
 
 #include "Event.hpp"
 
-#define W32W_MOUSE_BUTTON_LEFT      1
-#define W32W_MOUSE_BUTTON_RIGHT     2
-#define W32W_MOUSE_BUTTON_MIDDLE    3
-#define W32W_MOUSE_BUTTON_4         4
-#define W32W_MOUSE_BUTTON_5         5
-
 namespace W32W {
+	enum class BUTTON;
+
 	class MouseMovedEvent : public Event {
 	public:
 		_W32W_EVENT_CLASS_TYPE(MouseMoved)
@@ -56,7 +52,8 @@ namespace W32W {
 	public:
 		_W32W_EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
-		inline int getButton() const { return m_button; }
+		inline int getButtonCode() const { return m_button; }
+		inline BUTTON getButton() const { return (BUTTON)m_button; }
 
 	protected:
 		MouseButtonEvent(int button)
@@ -94,5 +91,13 @@ namespace W32W {
 			ss << "MouseButtonReleasedEvent: " << m_button;
 			return ss.str();
 		}
+	};
+
+	enum class BUTTON {
+		LEFT     = 1,
+		RIGHT    = 2,
+		MIDDLE   = 3,
+		BUTTON_4 = 4,
+		BUTTON_5 = 5
 	};
 }

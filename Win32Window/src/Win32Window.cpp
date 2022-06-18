@@ -323,37 +323,37 @@ namespace W32W {
 				IF_EVENT_CALLBACK(m_eventCallback(WindowMoveEvent(m_xPos, m_yPos)))
 				break;
 			case WM_LBUTTONDOWN:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent(W32W_MOUSE_BUTTON_LEFT)))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent((int)BUTTON::LEFT)))
 				break;
 			case WM_RBUTTONDOWN:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent(W32W_MOUSE_BUTTON_RIGHT)))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent((int)BUTTON::RIGHT)))
 				break;
 			case WM_MBUTTONDOWN:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent(W32W_MOUSE_BUTTON_MIDDLE)))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent((int)BUTTON::MIDDLE)))
 				break;
 			case WM_XBUTTONDOWN:
 				if (HIWORD(wParam) == XBUTTON1) {
-					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent(W32W_MOUSE_BUTTON_4)))
+					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent((int)BUTTON::BUTTON_4)))
 				}
 				else if (HIWORD(wParam) == XBUTTON2) {
-					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent(W32W_MOUSE_BUTTON_5)))
+					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent((int)BUTTON::BUTTON_5)))
 				}
 				break;
 			case WM_LBUTTONUP:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent(W32W_MOUSE_BUTTON_LEFT)))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent((int)BUTTON::LEFT)))
 				break;
 			case WM_RBUTTONUP:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent(W32W_MOUSE_BUTTON_RIGHT)))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent((int)BUTTON::RIGHT)))
 				break;
 			case WM_MBUTTONUP:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent(W32W_MOUSE_BUTTON_MIDDLE)))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent((int)BUTTON::MIDDLE)))
 				break;
 			case WM_XBUTTONUP:
 				if (HIWORD(wParam) == XBUTTON1) {
-					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent(W32W_MOUSE_BUTTON_4)))
+					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent((int)BUTTON::BUTTON_4)))
 				}
 				else if (HIWORD(wParam) == XBUTTON2) {
-					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent(W32W_MOUSE_BUTTON_5)))
+					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent((int)BUTTON::BUTTON_5)))
 				}
 				break;
 			case WM_MOUSEMOVE:
