@@ -15,9 +15,10 @@ namespace W32W {
 		  m_minimized(false), m_visible(false), m_focused(false), m_shouldClose(0), m_exitCode(0) {}
 
 	Win32Window::Win32Window(const std::string &title, int width, int height)
-		: m_CLASS_NAME(L"WindowClass"), m_hInstance(GetModuleHandle(nullptr)), m_title(title), m_width(width),
-		  m_height(height), m_aspectRatio((float)m_height / (float)m_width), m_resizable(true), m_fullscreen(false),
-		  m_maximized(false), m_minimized(false), m_visible(false), m_focused(true), m_shouldClose(false), m_exitCode(0) {
+		: m_CLASS_NAME(L"Win32Window"), m_hInstance(GetModuleHandle(nullptr)), m_title(title), m_width(width),
+		  m_height(height), m_aspectRatio((float)m_height / (float)m_width), m_xPos(0), m_yPos(0), m_resizable(true),
+		  m_fullscreen(false), m_maximized(false), m_minimized(false), m_visible(false), m_focused(true), m_shouldClose(false),
+		  m_exitCode(0) {
 		WNDCLASSEX wndClass {};
 		wndClass.cbSize = sizeof(WNDCLASSEX);
 		wndClass.lpszClassName = m_CLASS_NAME;                           // Class name
@@ -37,6 +38,11 @@ namespace W32W {
 
 		const std::wstring wTitle(m_title.begin(), m_title.end());
 
+		RECT r{};
+		r.bottom = m_height;
+		r.right = m_width;
+		AdjustWindowRect(&r, m_style, FALSE);
+
 		// Create the window
 		if (!(m_hWnd = CreateWindowEx(
 			0,                // Additional styles
@@ -45,8 +51,8 @@ namespace W32W {
 			m_style,          // Styles
 			CW_USEDEFAULT,    // X position
 			CW_USEDEFAULT,    // Y position
-			m_width,          // Width
-			m_height,         // Height
+			r.right - r.left, // Width
+			r.bottom - r.top, // Height
 			NULL,             // Parent window
 			NULL,             // Menu
 			m_hInstance,      // Instance
@@ -54,11 +60,6 @@ namespace W32W {
 			))) {
 			W32W_ASSERT(false, "Failed to create window");
 		}
-
-		RECT rect;
-		GetWindowRect(m_hWnd, &rect);
-		m_xPos = rect.left;
-		m_yPos = rect.top;
 
 		if (!(m_hDC = GetDC(m_hWnd))) {
 			W32W_ASSERT(false, "Failed to get device context");
@@ -120,18 +121,21 @@ namespace W32W {
 
 	void Win32Window::setSize(int width, int height) {
 		if (!m_fullscreen && !m_maximized) {
-			m_width = width;
-			m_height = height;
-			m_aspectRatio = (float)m_height / (float)m_width;
-			SetWindowPos(m_hWnd, NULL, 0, 0, m_width, m_height, SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOMOVE);
+			RECT r{};
+			r.right = width;
+			r.bottom = height;
+			AdjustWindowRect(&r, m_style, FALSE);
+			SetWindowPos(m_hWnd, HWND_TOP, 0, 0, r.right - r.left, r.bottom - r.top, SWP_NOMOVE);
 		}
 	}
 
 	void Win32Window::setPosition(int x, int y) {
 		if (!m_fullscreen && !m_maximized) {
-			m_xPos = x;
-			m_yPos = y;
-			SetWindowPos(m_hWnd, NULL, m_xPos, m_yPos, 0, 0, SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			RECT r{};
+			r.top = y;
+			r.left = x;
+			AdjustWindowRect(&r, m_style, FALSE);
+			SetWindowPos(m_hWnd, NULL, r.left, r.top, 0, 0, SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 		}
 	}
 
@@ -307,6 +311,7 @@ namespace W32W {
 				}
 				else if (wParam == SIZE_RESTORED && m_maximized) {
 					m_maximized = false;
+					IF_EVENT_CALLBACK(m_eventCallback(WindowRestoreEvent(EventType::WindowMaximize)))
 				}
 				else if (wParam == SIZE_MINIMIZED) {
 					m_minimized = true;
@@ -314,6 +319,7 @@ namespace W32W {
 				}
 				else if (wParam == SIZE_RESTORED && m_minimized) {
 					m_minimized = false;
+					IF_EVENT_CALLBACK(m_eventCallback(WindowRestoreEvent(EventType::WindowMinimize)))
 				}
 				IF_EVENT_CALLBACK(m_eventCallback(WindowResizeEvent(m_width, m_height)))
 				break;
@@ -322,51 +328,59 @@ namespace W32W {
 				m_yPos = (int)HIWORD(lParam);
 				IF_EVENT_CALLBACK(m_eventCallback(WindowMoveEvent(m_xPos, m_yPos)))
 				break;
+			case WM_SETFOCUS:
+				m_focused = true;
+				IF_EVENT_CALLBACK(m_eventCallback(WindowFocusEvent()))
+				break;
+			case WM_KILLFOCUS:
+				m_focused = false;
+				IF_EVENT_CALLBACK(m_eventCallback(WindowLostFocusEvent()))
+				break;
 			case WM_LBUTTONDOWN:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent((int)BUTTON::LEFT)))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressEvent((int)BUTTON::LEFT)))
 				break;
 			case WM_RBUTTONDOWN:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent((int)BUTTON::RIGHT)))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressEvent((int)BUTTON::RIGHT)))
 				break;
 			case WM_MBUTTONDOWN:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent((int)BUTTON::MIDDLE)))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressEvent((int)BUTTON::MIDDLE)))
 				break;
 			case WM_XBUTTONDOWN:
 				if (HIWORD(wParam) == XBUTTON1) {
-					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent((int)BUTTON::BUTTON_4)))
+					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressEvent((int)BUTTON::BUTTON_4)))
 				}
 				else if (HIWORD(wParam) == XBUTTON2) {
-					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressedEvent((int)BUTTON::BUTTON_5)))
+					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressEvent((int)BUTTON::BUTTON_5)))
 				}
 				break;
 			case WM_LBUTTONUP:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent((int)BUTTON::LEFT)))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleaseEvent((int)BUTTON::LEFT)))
 				break;
 			case WM_RBUTTONUP:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent((int)BUTTON::RIGHT)))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleaseEvent((int)BUTTON::RIGHT)))
 				break;
 			case WM_MBUTTONUP:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent((int)BUTTON::MIDDLE)))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleaseEvent((int)BUTTON::MIDDLE)))
 				break;
 			case WM_XBUTTONUP:
 				if (HIWORD(wParam) == XBUTTON1) {
-					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent((int)BUTTON::BUTTON_4)))
+					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleaseEvent((int)BUTTON::BUTTON_4)))
 				}
 				else if (HIWORD(wParam) == XBUTTON2) {
-					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleasedEvent((int)BUTTON::BUTTON_5)))
+					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleaseEvent((int)BUTTON::BUTTON_5)))
 				}
 				break;
 			case WM_MOUSEMOVE:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseMovedEvent((float)GET_X_LPARAM(lParam), (float)GET_Y_LPARAM(lParam))))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseMoveEvent((float)GET_X_LPARAM(lParam), (float)GET_Y_LPARAM(lParam))))
 				break;
 			case WM_MOUSEWHEEL:
-				IF_EVENT_CALLBACK(m_eventCallback(MouseScrolledEvent((float)GET_WHEEL_DELTA_WPARAM(wParam))))
+				IF_EVENT_CALLBACK(m_eventCallback(MouseScrollEvent((float)GET_WHEEL_DELTA_WPARAM(wParam))))
 				break;
 			case WM_KEYDOWN:
-				IF_EVENT_CALLBACK(m_eventCallback(KeyPressedEvent((int)wParam, LOWORD(lParam))))
+				IF_EVENT_CALLBACK(m_eventCallback(KeyPressEvent((int)wParam, LOWORD(lParam))))
 				break;
 			case WM_KEYUP:
-				IF_EVENT_CALLBACK(m_eventCallback(KeyReleasedEvent((int)wParam)))
+				IF_EVENT_CALLBACK(m_eventCallback(KeyReleaseEvent((int)wParam)))
 				break;
 			default:
 				break;

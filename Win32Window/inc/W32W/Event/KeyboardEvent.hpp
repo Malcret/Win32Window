@@ -20,17 +20,17 @@ namespace W32W {
 		int m_keyCode;
 	};
 
-	class KeyPressedEvent : public KeyEvent {
+	class KeyPressEvent : public KeyEvent {
 	public:
-		_W32W_EVENT_CLASS_TYPE(KeyPressed)
+		_W32W_EVENT_CLASS_TYPE(KeyPress)
 
-		KeyPressedEvent(int keyCode, unsigned int repeatCount)
+		KeyPressEvent(int keyCode, unsigned int repeatCount)
 			: KeyEvent(keyCode), m_repeatCount(repeatCount) {
 		}
 
 		inline std::string toString() const override {
 			std::stringstream ss;
-			ss << "KeyPressedEvent: " << m_keyCode << " (" << m_repeatCount << " repeats)";
+			ss << "KeyPressEvent: " << m_keyCode << " (" << m_repeatCount << " repeats)";
 			return ss.str();
 		}
 
@@ -40,17 +40,17 @@ namespace W32W {
 		unsigned int m_repeatCount;
 	};
 
-	class KeyReleasedEvent : public KeyEvent {
+	class KeyReleaseEvent : public KeyEvent {
 	public:
-		_W32W_EVENT_CLASS_TYPE(KeyReleased)
+		_W32W_EVENT_CLASS_TYPE(KeyRelease)
 
-		KeyReleasedEvent(int keyCode)
+		KeyReleaseEvent(int keyCode)
 			: KeyEvent(keyCode) {
 		}
 
 		inline std::string toString() const override {
 			std::stringstream ss;
-			ss << "KeyReleasedEvent: " << m_keyCode;
+			ss << "KeyReleaseEvent: " << m_keyCode;
 			return ss.str();
 		}
 	};

@@ -5,18 +5,18 @@
 namespace W32W {
 	enum class BUTTON;
 
-	class MouseMovedEvent : public Event {
+	class MouseMoveEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_TYPE(MouseMoved)
+		_W32W_EVENT_CLASS_TYPE(MouseMove)
 		_W32W_EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
-		MouseMovedEvent(float xPos, float yPos)
+		MouseMoveEvent(float xPos, float yPos)
 			: m_xPos(xPos), m_yPos(yPos) {
 		}
 
 		inline std::string toString() const override {
 			std::stringstream ss;
-			ss << "MouseMovedEvent: " << m_xPos << ", " << m_yPos;
+			ss << "MouseMoveEvent: " << m_xPos << ", " << m_yPos;
 			return ss.str();
 		}
 
@@ -27,18 +27,18 @@ namespace W32W {
 		float m_xPos, m_yPos;
 	};
 
-	class MouseScrolledEvent : public Event {
+	class MouseScrollEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_TYPE(MouseScrolled)
+		_W32W_EVENT_CLASS_TYPE(MouseScroll)
 		_W32W_EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
-		MouseScrolledEvent(float offset)
+		MouseScrollEvent(float offset)
 			: m_offset(offset) {
 		}
 
 		inline std::string toString() const override {
 			std::stringstream ss;
-			ss << "MouseScrolledEvent: " << m_offset;
+			ss << "MouseScrollEvent: " << m_offset;
 			return ss.str();
 		}
 
@@ -63,32 +63,32 @@ namespace W32W {
 		int m_button;
 	};
 
-	class MouseButtonPressedEvent : public MouseButtonEvent {
+	class MouseButtonPressEvent : public MouseButtonEvent {
 	public:
-		_W32W_EVENT_CLASS_TYPE(MouseButtonPressed)
+		_W32W_EVENT_CLASS_TYPE(MouseButtonPress)
 
-		MouseButtonPressedEvent(int button)
+		MouseButtonPressEvent(int button)
 			: MouseButtonEvent(button) {
 		}
 
 		inline std::string toString() const override {
 			std::stringstream ss;
-			ss << "MouseButtonPressedEvent: " << m_button;
+			ss << "MouseButtonPressEvent: " << m_button;
 			return ss.str();
 		}
 	};
 
-	class MouseButtonReleasedEvent : public MouseButtonEvent {
+	class MouseButtonReleaseEvent : public MouseButtonEvent {
 	public:
-		_W32W_EVENT_CLASS_TYPE(MouseButtonReleased)
+		_W32W_EVENT_CLASS_TYPE(MouseButtonRelease)
 
-		MouseButtonReleasedEvent(int button)
+		MouseButtonReleaseEvent(int button)
 			: MouseButtonEvent(button) {
 		}
 
 		inline std::string toString() const override {
 			std::stringstream ss;
-			ss << "MouseButtonReleasedEvent: " << m_button;
+			ss << "MouseButtonReleaseEvent: " << m_button;
 			return ss.str();
 		}
 	};

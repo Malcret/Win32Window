@@ -11,9 +11,9 @@
 namespace W32W {
 	enum class EventType {
 		None = 0,
-		WindowClose, WindowMinimize, WindowMaximize, WindowResize, WindowMoved, WindowFocus, WindowLostFocus,
-		KeyPressed, KeyReleased,
-		MouseMoved, MouseScrolled, MouseButtonPressed, MouseButtonReleased
+		WindowClose, WindowMinimize, WindowMaximize, WindowResize, WindowRestore, WindowMove, WindowFocus, WindowLostFocus,
+		KeyPress, KeyRelease,
+		MouseMove, MouseScroll, MouseButtonPress, MouseButtonRelease
 	};
 
 	enum EventCategoryFlag {

@@ -3,14 +3,13 @@
 W32W::Win32Window *pWindow;
 
 void onEvents(W32W::Event &e);
-bool onKeyPress(W32W::KeyPressedEvent &e);
+bool onKeyPress(W32W::KeyPressEvent &e);
 bool onWindowClose(W32W::WindowCloseEvent &e);
 
 int main() {
 	pWindow = new W32W::Win32Window("Win32Window", 800, 600);
 	pWindow->setEventCallback(onEvents);
 	pWindow->setIcon("resources/icons/Malcret.ico");
-	//pWindow->setFullscreen();
 	pWindow->setVisible();
 
 	std::string pTitle = pWindow->getTitle();
@@ -32,11 +31,11 @@ int main() {
 
 void onEvents(W32W::Event &e) {
 	std::cout << "Event: " << e << std::endl;
-	W32W::Event::dispatch<W32W::KeyPressedEvent>(e, onKeyPress);
+	W32W::Event::dispatch<W32W::KeyPressEvent>(e, onKeyPress);
 	W32W::Event::dispatch<W32W::WindowCloseEvent>(e, onWindowClose);
 }
 
-bool onKeyPress(W32W::KeyPressedEvent &e) {
+bool onKeyPress(W32W::KeyPressEvent &e) {
 	switch (e.getKey()) {
 		case W32W::KEY::ESCAPE:
 			pWindow->close();
