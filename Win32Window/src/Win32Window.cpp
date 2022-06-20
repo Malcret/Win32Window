@@ -12,13 +12,13 @@ namespace W32W {
 	Win32Window::Win32Window()
 		: m_CLASS_NAME(L""), m_hInstance(nullptr), m_hWnd(nullptr), m_hDC(nullptr), m_style(0), m_title(""), m_width(0),
 		  m_height(0), m_xPos(0), m_yPos(0), m_aspectRatio(0), m_resizable(false), m_fullscreen(false), m_maximized(false),
-		  m_minimized(false), m_visible(false), m_focused(false), m_shouldClose(0), m_exitCode(0) {}
+		  m_minimized(false), m_visible(false), m_focused(false), m_shouldClose(0), m_exitCode(0), m_keyPressed(), m_buttonPressed() {}
 
 	Win32Window::Win32Window(const std::string &title, int width, int height)
 		: m_CLASS_NAME(L"Win32Window"), m_hInstance(GetModuleHandle(nullptr)), m_title(title), m_width(width),
 		  m_height(height), m_aspectRatio((float)m_height / (float)m_width), m_xPos(0), m_yPos(0), m_resizable(true),
 		  m_fullscreen(false), m_maximized(false), m_minimized(false), m_visible(false), m_focused(true), m_shouldClose(false),
-		  m_exitCode(0) {
+		  m_exitCode(0), m_keyPressed(), m_buttonPressed() {
 		WNDCLASSEX wndClass {};
 		wndClass.cbSize = sizeof(WNDCLASSEX);
 		wndClass.lpszClassName = m_CLASS_NAME;                           // Class name
@@ -296,6 +296,14 @@ namespace W32W {
 		return m_exitCode;
 	}
 
+	bool Win32Window::keyPressed(KEY key) const {
+		return m_keyPressed[(int)key];
+	}
+
+	bool Win32Window::buttonPressed(BUTTON button) const {
+		return m_buttonPressed[(int)button];
+	}
+
 	LRESULT Win32Window::msgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 		switch (message) {
 			case WM_CLOSE:
@@ -337,36 +345,46 @@ namespace W32W {
 				IF_EVENT_CALLBACK(m_eventCallback(WindowLostFocusEvent()))
 				break;
 			case WM_LBUTTONDOWN:
+				m_buttonPressed[(int)BUTTON::LEFT] = true;
 				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressEvent((int)BUTTON::LEFT)))
 				break;
 			case WM_RBUTTONDOWN:
+				m_buttonPressed[(int)BUTTON::RIGHT] = true;
 				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressEvent((int)BUTTON::RIGHT)))
 				break;
 			case WM_MBUTTONDOWN:
+				m_buttonPressed[(int)BUTTON::MIDDLE] = true;
 				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressEvent((int)BUTTON::MIDDLE)))
 				break;
 			case WM_XBUTTONDOWN:
 				if (HIWORD(wParam) == XBUTTON1) {
+					m_buttonPressed[(int)BUTTON::BUTTON_4] = true;
 					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressEvent((int)BUTTON::BUTTON_4)))
 				}
 				else if (HIWORD(wParam) == XBUTTON2) {
+					m_buttonPressed[(int)BUTTON::BUTTON_5] = true;
 					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonPressEvent((int)BUTTON::BUTTON_5)))
 				}
 				break;
 			case WM_LBUTTONUP:
+				m_buttonPressed[(int)BUTTON::LEFT] = false;
 				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleaseEvent((int)BUTTON::LEFT)))
 				break;
 			case WM_RBUTTONUP:
+				m_buttonPressed[(int)BUTTON::RIGHT] = false;
 				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleaseEvent((int)BUTTON::RIGHT)))
 				break;
 			case WM_MBUTTONUP:
+				m_buttonPressed[(int)BUTTON::MIDDLE] = false;
 				IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleaseEvent((int)BUTTON::MIDDLE)))
 				break;
 			case WM_XBUTTONUP:
 				if (HIWORD(wParam) == XBUTTON1) {
+					m_buttonPressed[(int)BUTTON::BUTTON_4] = false;
 					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleaseEvent((int)BUTTON::BUTTON_4)))
 				}
 				else if (HIWORD(wParam) == XBUTTON2) {
+					m_buttonPressed[(int)BUTTON::BUTTON_5] = false;
 					IF_EVENT_CALLBACK(m_eventCallback(MouseButtonReleaseEvent((int)BUTTON::BUTTON_5)))
 				}
 				break;
@@ -377,9 +395,11 @@ namespace W32W {
 				IF_EVENT_CALLBACK(m_eventCallback(MouseScrollEvent((float)GET_WHEEL_DELTA_WPARAM(wParam))))
 				break;
 			case WM_KEYDOWN:
+				m_keyPressed[(int)wParam] = true;
 				IF_EVENT_CALLBACK(m_eventCallback(KeyPressEvent((int)wParam, LOWORD(lParam))))
 				break;
 			case WM_KEYUP:
+				m_keyPressed[(int)wParam] = false;
 				IF_EVENT_CALLBACK(m_eventCallback(KeyReleaseEvent((int)wParam)))
 				break;
 			default:

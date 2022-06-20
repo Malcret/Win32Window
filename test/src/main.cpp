@@ -17,6 +17,10 @@ int main() {
 	while (!pWindow->shouldClose()) {
 		pWindow->pollEvents();
 
+		if (pWindow->keyPressed(W32W::KEY::RETURN)) {
+			std::cout << "Return is pressed\n";
+		}
+
 		double deltaTime = W32W::getDeltaTime();
 		pWindow->setTitle(pTitle + " | " + std::to_string(W32W::getFPS(deltaTime)) + " FPS");
 
@@ -46,10 +50,11 @@ bool onKeyPress(W32W::KeyPressEvent &e) {
 		default:
 			break;
 	}
+
 	return true;
 }
 
 bool onWindowClose(W32W::WindowCloseEvent &e) {
-	pWindow->close(0);
+	pWindow->close();
 	return true;
 }

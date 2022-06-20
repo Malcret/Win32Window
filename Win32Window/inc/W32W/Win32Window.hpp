@@ -52,6 +52,9 @@ namespace W32W {
 		bool isFocused() const;
 		int getExitCode() const;
 
+		bool keyPressed(KEY key) const;
+		bool buttonPressed(BUTTON button) const;
+
 		inline void setEventCallback(EventCallbackFunc callback) { m_eventCallback = callback; }
 
 	private:
@@ -76,6 +79,9 @@ namespace W32W {
 		bool m_resizable, m_fullscreen, m_maximized, m_minimized, m_visible, m_focused;
 		bool m_shouldClose;
 		int m_exitCode;
+
+		bool m_keyPressed[255];
+		bool m_buttonPressed[6];
 
 		EventCallbackFunc m_eventCallback;
 
