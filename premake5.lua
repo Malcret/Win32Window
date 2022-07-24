@@ -15,7 +15,7 @@ _objdir = _targetdir .. "/obj"
 cfiles = { "%{prj.location}/inc/**.h", "%{prj.location}/src/**.c" }
 cppfiles = { cfiles, "%{prj.location}/inc/**.hpp", "%{prj.location}/src/**.cpp" }
 
-project "Win32Window"
+project "mww"
 	kind "StaticLib"
 	language "C++"
 
@@ -65,7 +65,7 @@ project "test"
 	}
 
 	links {
-		"Win32Window"
+		"mww"
 	}
 
 	filter "system:windows"
