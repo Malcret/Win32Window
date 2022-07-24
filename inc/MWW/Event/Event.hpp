@@ -4,11 +4,11 @@
 #include <string>
 #include <sstream>
 #include <functional>
-#include "W32W/Utility.hpp"
+#include "MWW/Utility.hpp"
 
-#define W32W_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+#define MWW_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
 
-namespace W32W {
+namespace MWW {
 	enum class EventType {
 		None = 0,
 		WindowClose, WindowMinimize, WindowMaximize, WindowResize, WindowRestore, WindowMove, WindowFocus, WindowLostFocus,
@@ -18,18 +18,18 @@ namespace W32W {
 
 	enum EventCategoryFlag {
 		None = 0,
-		EventCategoryWindow = W32W_BIT(0),
-		EventCategoryInput = W32W_BIT(1),
-		EventCategoryKeyboard = W32W_BIT(2),
-		EventCategoryMouse = W32W_BIT(3),
-		EventCategoryMouseButton = W32W_BIT(4)
+		EventCategoryWindow = MWW_BIT(0),
+		EventCategoryInput = MWW_BIT(1),
+		EventCategoryKeyboard = MWW_BIT(2),
+		EventCategoryMouse = MWW_BIT(3),
+		EventCategoryMouseButton = MWW_BIT(4)
 	};
 
-	#define _W32W_EVENT_CLASS_TYPE(type) inline static EventType getStaticEventType() { return EventType::type; } \
+	#define _MWW_EVENT_CLASS_TYPE(type) inline static EventType getStaticEventType() { return EventType::type; } \
 	                                     inline EventType getEventType() const { return getStaticEventType(); } \
 	                                     inline const char *getName() const { return #type; }
 
-	#define _W32W_EVENT_CLASS_CATEGORY(category) virtual inline unsigned short getCategoryFlags() const override { return category; }
+	#define _MWW_EVENT_CLASS_CATEGORY(category) virtual inline unsigned short getCategoryFlags() const override { return category; }
 
 	class Event {
 		template<typename T>

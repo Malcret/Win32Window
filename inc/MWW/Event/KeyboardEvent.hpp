@@ -2,12 +2,12 @@
 
 #include "Event.hpp"
 
-namespace W32W {
+namespace MWW {
 	enum class KEY;
 
 	class KeyEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
+		_MWW_EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 
 		inline int getKeyCode() const { return m_keyCode; }
 		inline KEY getKey() const { return (KEY)m_keyCode; }
@@ -22,7 +22,7 @@ namespace W32W {
 
 	class KeyPressEvent : public KeyEvent {
 	public:
-		_W32W_EVENT_CLASS_TYPE(KeyPress)
+		_MWW_EVENT_CLASS_TYPE(KeyPress)
 
 		KeyPressEvent(int keyCode, unsigned int repeatCount)
 			: KeyEvent(keyCode), m_repeatCount(repeatCount) {
@@ -42,7 +42,7 @@ namespace W32W {
 
 	class KeyReleaseEvent : public KeyEvent {
 	public:
-		_W32W_EVENT_CLASS_TYPE(KeyRelease)
+		_MWW_EVENT_CLASS_TYPE(KeyRelease)
 
 		KeyReleaseEvent(int keyCode)
 			: KeyEvent(keyCode) {

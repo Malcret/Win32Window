@@ -2,35 +2,35 @@
 
 #include "Event.hpp"
 
-namespace W32W {
+namespace MWW {
 	class WindowCloseEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_TYPE(WindowClose)
-		_W32W_EVENT_CLASS_CATEGORY(EventCategoryWindow)
+		_MWW_EVENT_CLASS_TYPE(WindowClose)
+		_MWW_EVENT_CLASS_CATEGORY(EventCategoryWindow)
 
 		WindowCloseEvent() {}
 	};
 
 	class WindowMinimizeEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_TYPE(WindowMinimize)
-		_W32W_EVENT_CLASS_CATEGORY(EventCategoryWindow)
+		_MWW_EVENT_CLASS_TYPE(WindowMinimize)
+		_MWW_EVENT_CLASS_CATEGORY(EventCategoryWindow)
 
 		WindowMinimizeEvent() {}
 	};
 
 	class WindowMaximizeEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_TYPE(WindowMaximize)
-		_W32W_EVENT_CLASS_CATEGORY(EventCategoryWindow)
+		_MWW_EVENT_CLASS_TYPE(WindowMaximize)
+		_MWW_EVENT_CLASS_CATEGORY(EventCategoryWindow)
 
 		WindowMaximizeEvent() {}
 	};
 
 	class WindowRestoreEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_TYPE(WindowRestore)
-		_W32W_EVENT_CLASS_CATEGORY(EventCategoryWindow)
+		_MWW_EVENT_CLASS_TYPE(WindowRestore)
+		_MWW_EVENT_CLASS_CATEGORY(EventCategoryWindow)
 
 		WindowRestoreEvent(EventType oldWndState)
 			: m_oldWndState(oldWndState) {}
@@ -59,8 +59,8 @@ namespace W32W {
 
 	class WindowResizeEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_TYPE(WindowResize)
-		_W32W_EVENT_CLASS_CATEGORY(EventCategoryWindow)
+		_MWW_EVENT_CLASS_TYPE(WindowResize)
+		_MWW_EVENT_CLASS_CATEGORY(EventCategoryWindow)
 
 		WindowResizeEvent(int width, int height)
 			: m_width(width), m_height(height) {
@@ -81,8 +81,8 @@ namespace W32W {
 
 	class WindowMoveEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_TYPE(WindowMove)
-		_W32W_EVENT_CLASS_CATEGORY(EventCategoryWindow)
+		_MWW_EVENT_CLASS_TYPE(WindowMove)
+		_MWW_EVENT_CLASS_CATEGORY(EventCategoryWindow)
 
 		WindowMoveEvent(int xPos, int yPos)
 			: m_xPos(xPos), m_yPos(yPos) {
@@ -103,16 +103,16 @@ namespace W32W {
 
 	class WindowFocusEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_TYPE(WindowFocus)
-		_W32W_EVENT_CLASS_CATEGORY(EventCategoryWindow)
+		_MWW_EVENT_CLASS_TYPE(WindowFocus)
+		_MWW_EVENT_CLASS_CATEGORY(EventCategoryWindow)
 
 		WindowFocusEvent() {}
 	};
 
 	class WindowLostFocusEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_TYPE(WindowLostFocus)
-		_W32W_EVENT_CLASS_CATEGORY(EventCategoryWindow)
+		_MWW_EVENT_CLASS_TYPE(WindowLostFocus)
+		_MWW_EVENT_CLASS_CATEGORY(EventCategoryWindow)
 
 		WindowLostFocusEvent() {}
 	};

@@ -16,7 +16,6 @@ cfiles = { "%{prj.location}/inc/**.h", "%{prj.location}/src/**.c" }
 cppfiles = { cfiles, "%{prj.location}/inc/**.hpp", "%{prj.location}/src/**.cpp" }
 
 project "Win32Window"
-	location "Win32Window"
 	kind "StaticLib"
 	language "C++"
 
@@ -61,7 +60,7 @@ project "test"
 	}
 
 	includedirs {
-		"Win32Window/inc",
+		"inc",
 		"%{prj.location}/inc"
 	}
 

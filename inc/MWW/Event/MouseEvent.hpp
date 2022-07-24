@@ -2,13 +2,13 @@
 
 #include "Event.hpp"
 
-namespace W32W {
+namespace MWW {
 	enum class BUTTON;
 
 	class MouseMoveEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_TYPE(MouseMove)
-		_W32W_EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+		_MWW_EVENT_CLASS_TYPE(MouseMove)
+		_MWW_EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
 		MouseMoveEvent(float xPos, float yPos)
 			: m_xPos(xPos), m_yPos(yPos) {
@@ -29,8 +29,8 @@ namespace W32W {
 
 	class MouseScrollEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_TYPE(MouseScroll)
-		_W32W_EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+		_MWW_EVENT_CLASS_TYPE(MouseScroll)
+		_MWW_EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
 		MouseScrollEvent(float offset)
 			: m_offset(offset) {
@@ -50,7 +50,7 @@ namespace W32W {
 
 	class MouseButtonEvent : public Event {
 	public:
-		_W32W_EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+		_MWW_EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
 		inline int getButtonCode() const { return m_button; }
 		inline BUTTON getButton() const { return (BUTTON)m_button; }
@@ -65,7 +65,7 @@ namespace W32W {
 
 	class MouseButtonPressEvent : public MouseButtonEvent {
 	public:
-		_W32W_EVENT_CLASS_TYPE(MouseButtonPress)
+		_MWW_EVENT_CLASS_TYPE(MouseButtonPress)
 
 		MouseButtonPressEvent(int button)
 			: MouseButtonEvent(button) {
@@ -80,7 +80,7 @@ namespace W32W {
 
 	class MouseButtonReleaseEvent : public MouseButtonEvent {
 	public:
-		_W32W_EVENT_CLASS_TYPE(MouseButtonRelease)
+		_MWW_EVENT_CLASS_TYPE(MouseButtonRelease)
 
 		MouseButtonReleaseEvent(int button)
 			: MouseButtonEvent(button) {

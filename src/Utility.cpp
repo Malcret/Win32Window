@@ -1,6 +1,6 @@
-#include "W32W/Utility.hpp"
+#include "MWW/Utility.hpp"
 
-namespace W32W {
+namespace MWW {
 	double getTime() {
 		static uint64_t frequency = 0;
 		static bool qpf = QueryPerformanceFrequency((LARGE_INTEGER *)&frequency);

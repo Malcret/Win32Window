@@ -1,14 +1,14 @@
-#include "W32W/Win32Window.hpp"
+#include "MWW/Win32Window.hpp"
 #include <windowsx.h>
-#include "W32W/Utility.hpp"
+#include "MWW/Utility.hpp"
 
 #ifndef NDEBUG
-#define IF_EVENT_CALLBACK(x) if (m_eventCallback) { x; } else { W32W_ASSERT(false, "Failed to call event callback") }
+#define IF_EVENT_CALLBACK(x) if (m_eventCallback) { x; } else { MWW_ASSERT(false, "Failed to call event callback") }
 #elif
 #define IF_EVENT_CALLBACK(x) if (m_eventCallback) { x; }
 #endif // NDEBUG
 
-namespace W32W {
+namespace MWW {
 	Win32Window::Win32Window()
 		: m_CLASS_NAME(L""), m_hInstance(nullptr), m_hWnd(nullptr), m_hDC(nullptr), m_style(0), m_title(""), m_width(0),
 		  m_height(0), m_xPos(0), m_yPos(0), m_aspectRatio(0), m_resizable(false), m_fullscreen(false), m_maximized(false),
@@ -58,11 +58,11 @@ namespace W32W {
 			m_hInstance,      // Instance
 			NULL              // Additional application data
 			))) {
-			W32W_ASSERT(false, "Failed to create window");
+			MWW_ASSERT(false, "Failed to create window");
 		}
 
 		if (!(m_hDC = GetDC(m_hWnd))) {
-			W32W_ASSERT(false, "Failed to get device context");
+			MWW_ASSERT(false, "Failed to get device context");
 		}
 
 		SetWindowLongPtr(m_hWnd, GWLP_USERDATA, (LONG_PTR)this);
@@ -418,3 +418,5 @@ namespace W32W {
 		}
 	}
 }
+
+#undef IF_EVENT_CALLBACK

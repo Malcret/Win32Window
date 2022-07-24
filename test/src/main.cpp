@@ -1,13 +1,13 @@
-#include "W32W/Win32Window.hpp"
+#include "MWW/Win32Window.hpp"
 
-W32W::Win32Window *pWindow;
+MWW::Win32Window *pWindow;
 
-void onEvents(W32W::Event &e);
-bool onKeyPress(W32W::KeyPressEvent &e);
-bool onWindowClose(W32W::WindowCloseEvent &e);
+void onEvents(MWW::Event &e);
+bool onKeyPress(MWW::KeyPressEvent &e);
+bool onWindowClose(MWW::WindowCloseEvent &e);
 
 int main() {
-	pWindow = new W32W::Win32Window("Win32Window", 800, 600);
+	pWindow = new MWW::Win32Window("Win32Window", 800, 600);
 	pWindow->setEventCallback(onEvents);
 	pWindow->setIcon("resources/icons/Malcret.ico");
 	pWindow->setVisible();
@@ -17,12 +17,12 @@ int main() {
 	while (!pWindow->shouldClose()) {
 		pWindow->pollEvents();
 
-		if (pWindow->keyPressed(W32W::KEY::RETURN)) {
+		if (pWindow->keyPressed(MWW::KEY::RETURN)) {
 			std::cout << "Return is pressed\n";
 		}
 
-		double deltaTime = W32W::getDeltaTime();
-		pWindow->setTitle(pTitle + " | " + std::to_string(W32W::getFPS(deltaTime)) + " FPS");
+		double deltaTime = MWW::getDeltaTime();
+		pWindow->setTitle(pTitle + " | " + std::to_string(MWW::getFPS(deltaTime)) + " FPS");
 
 		pWindow->swapBuffers();
 	}
@@ -33,18 +33,18 @@ int main() {
 	return exitCode;
 }
 
-void onEvents(W32W::Event &e) {
+void onEvents(MWW::Event &e) {
 	std::cout << "Event: " << e << std::endl;
-	W32W::Event::dispatch<W32W::KeyPressEvent>(e, onKeyPress);
-	W32W::Event::dispatch<W32W::WindowCloseEvent>(e, onWindowClose);
+	MWW::Event::dispatch<MWW::KeyPressEvent>(e, onKeyPress);
+	MWW::Event::dispatch<MWW::WindowCloseEvent>(e, onWindowClose);
 }
 
-bool onKeyPress(W32W::KeyPressEvent &e) {
+bool onKeyPress(MWW::KeyPressEvent &e) {
 	switch (e.getKey()) {
-		case W32W::KEY::ESCAPE:
+		case MWW::KEY::ESCAPE:
 			pWindow->close();
 			break;
-		case W32W::KEY::F11:
+		case MWW::KEY::F11:
 			pWindow->setFullscreen(!pWindow->isFullscreen());
 			break;
 		default:
@@ -54,7 +54,7 @@ bool onKeyPress(W32W::KeyPressEvent &e) {
 	return true;
 }
 
-bool onWindowClose(W32W::WindowCloseEvent &e) {
+bool onWindowClose(MWW::WindowCloseEvent &e) {
 	pWindow->close();
 	return true;
 }

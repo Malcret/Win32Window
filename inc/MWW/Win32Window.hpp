@@ -7,7 +7,7 @@
 #include "Event/MouseEvent.hpp"
 #include "Event/WindowEvent.hpp"
 
-namespace W32W {
+namespace MWW {
 	class Win32Window {
 	public:
 		Win32Window();
